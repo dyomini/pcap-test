@@ -86,7 +86,6 @@ int main(int argc, char* argv[]) {
 		p=(u_char*) packet;
 		ethHdr = (struct libnet_ethernet_hdr*)p;
 		ipv4Hdr = (char*)ethHdr + sizeof(*ethHdr); 
-		tcpHdr = (char*)ipv4Hdr+(ipv4Hdr->ip_hl)*4;
 		uint16_t ethType=ntohs(ethHdr->ether_type);
 		uint8_t ipv4Protocol=ipv4Hdr->ip_p;
 		
@@ -98,9 +97,13 @@ int main(int argc, char* argv[]) {
 				p+=sizeof(ethHdr);
 				printIpv4((u_char*) p);
 				p=((char*)ipv4Hdr+(ipv4Hdr->ip_hl)*4);
+				printf("a\n");
 				printTcp((u_char*) p);
+				printf("b\n");
 				char *data = (char*)tcpHdr+(tcpHdr->th_off*4);
+				printf("c\n");
 				uint32_t data_len = (header->caplen) - (data - (char*)packet);
+				printf("d\n");
 				printPayload(data, data_len>=20?20:data_len);
 			}
 		}
